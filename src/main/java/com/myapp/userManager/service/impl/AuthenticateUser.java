@@ -5,6 +5,7 @@ import com.myapp.userManager.entity.UserEntity;
 import com.myapp.userManager.repository.PhoneRepository;
 import com.myapp.userManager.repository.UserRepository;
 import com.myapp.userManager.service.IAuthenticateUserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,9 +13,12 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
+@Slf4j
 @Service
 public class AuthenticateUser implements IAuthenticateUserService {
 
@@ -50,14 +54,18 @@ public class AuthenticateUser implements IAuthenticateUserService {
             return new ResponseEntity<>(updatedUserJson, HttpStatus.OK);
         }
         catch (JsonProcessingException e){
-            e.printStackTrace();
+            log.debug("Json Error -> {} ", e.getMessage());
             return new ResponseEntity<>("Error proccessing response", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     private boolean validateEmailFormat(UserEntity user){
-        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-        return Pattern.matches(emailRegex, user.getEmail());
+        if (user.getEmail() != null && user.getEmail().length() > 5){
+            String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+            return Pattern.matches(emailRegex, user.getEmail());
+        } else {
+            return false;
+        }
     }
 
     private boolean validateEmail(UserEntity user){
@@ -69,8 +77,12 @@ public class AuthenticateUser implements IAuthenticateUserService {
     }
 
     private boolean validatePassword(UserEntity user){
-        String passwordRegex = "^(?=.*[A-Z])(?=.*[a-z].*[a-z])(?=.*\\d.*\\d).*$";
-        return Pattern.matches(passwordRegex, user.getPassword());
+        if (user.getPassword() != null && user.getPassword().length() > 3) {
+            String passwordRegex = "^(?=.*[A-Z])(?=.*[a-z].*[a-z])(?=.*\\d.*\\d).*$";
+            return Pattern.matches(passwordRegex, user.getPassword());
+        } else {
+            return false;
+        }
     }
 
     private UserEntity createOrUpdateUser(UserEntity user) {

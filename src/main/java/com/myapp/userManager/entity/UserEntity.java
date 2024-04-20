@@ -20,13 +20,10 @@ public class UserEntity {
     @SequenceGenerator(name = "user_data_seq", allocationSize = 1)
     private Long id; //TODO: cambiar a UUID
 
-    @NotNull
     private String name;
 
-    @NotNull
     private String email;
 
-    @NotNull
     private String password;
 
     private LocalDate creationDate;
