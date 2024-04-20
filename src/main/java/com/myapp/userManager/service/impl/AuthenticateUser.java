@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -31,16 +33,21 @@ public class AuthenticateUser implements IAuthenticateUserService {
     @Override
     public ResponseEntity<Object> manageUserReq(UserEntity user) {
 
+        Map<String, String> responseMap = new HashMap<>();
+
         if (!validateEmailFormat(user)) {
-            return new ResponseEntity<>("Incorrect email format", HttpStatus.BAD_REQUEST);
+            responseMap.put("mensaje", "Formato de correo incorrecto");
+            return new ResponseEntity<>(responseMap, HttpStatus.BAD_REQUEST);
         }
 
         if (!validateEmail(user)) {
-            return new ResponseEntity<>("email previously registered", HttpStatus.BAD_REQUEST);
+            responseMap.put("mensaje", "Correo ya registrado");
+            return new ResponseEntity<>(responseMap, HttpStatus.BAD_REQUEST);
         }
 
         if (!validatePassword(user)) {
-            return new ResponseEntity<>("Incorrect password format", HttpStatus.BAD_REQUEST);
+            responseMap.put("mensaje", "Formato de contraseña incorrecto");
+            return new ResponseEntity<>(responseMap, HttpStatus.BAD_REQUEST);
         }
 
         UserEntity updatedUser = createOrUpdateUser(user);
@@ -52,7 +59,8 @@ public class AuthenticateUser implements IAuthenticateUserService {
             return new ResponseEntity<>(updatedUserJson, HttpStatus.OK);
         } catch (JsonProcessingException e) {
             log.debug("Json Error -> {} ", e.getMessage());
-            return new ResponseEntity<>("Error proccessing response", HttpStatus.INTERNAL_SERVER_ERROR);
+            responseMap.put("mensaje", "Error al procesar la respuesta");
+            return new ResponseEntity<>(responseMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
