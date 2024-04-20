@@ -20,25 +20,12 @@ extra["springCloudVersion"] = "2023.0.1"
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("jakarta.validation:jakarta.validation-api")
+	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 	runtimeOnly("com.h2database:h2")
-	compileOnly("org.projectlombok:lombok:1.18.32")
+	compileOnly("org.projectlombok:lombok:1.18.20")
+	annotationProcessor("org.projectlombok:lombok:1.18.20")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
-
-	// If using JUnit Jupiter
-	/*testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-
-	// If using JUnit Vintage
-	testCompileOnly("junit:junit:4.13.2")
-	testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.9.2")
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-
-	// If using JUnit 4
-	testImplementation("junit:junit:4.13.2")
-
-	// If using JUnit 3
-	testCompileOnly("junit:junit:3.8.2")
-	testRuntimeOnly("junit:junit:4.13.2")*/
 }
 
 dependencyManagement {
