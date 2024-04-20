@@ -1,6 +1,8 @@
 package com.myapp.userManager.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.myapp.userManager.entity.UserEntity;
 import com.myapp.userManager.repository.PhoneRepository;
 import com.myapp.userManager.repository.UserRepository;
@@ -8,8 +10,6 @@ import com.myapp.userManager.service.IAuthenticateUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -50,15 +50,14 @@ public class AuthenticateUser implements IAuthenticateUserService {
             String updatedUserJson = objectMapper.writeValueAsString(updatedUser);
 
             return new ResponseEntity<>(updatedUserJson, HttpStatus.OK);
-        }
-        catch (JsonProcessingException e){
+        } catch (JsonProcessingException e) {
             log.debug("Json Error -> {} ", e.getMessage());
             return new ResponseEntity<>("Error proccessing response", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    boolean validateEmailFormat(UserEntity user){
-        if (user.getEmail() != null && user.getEmail().length() > 5){
+    boolean validateEmailFormat(UserEntity user) {
+        if (user.getEmail() != null && user.getEmail().length() > 5) {
             String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
             return Pattern.matches(emailRegex, user.getEmail());
         } else {
@@ -66,15 +65,15 @@ public class AuthenticateUser implements IAuthenticateUserService {
         }
     }
 
-    boolean validateEmail(UserEntity user){
+    boolean validateEmail(UserEntity user) {
         return !isEmailRegistered(user.getEmail());
     }
 
-    boolean isEmailRegistered(String userEmail){
+    boolean isEmailRegistered(String userEmail) {
         return userRepository.findByEmail(userEmail) != null;
     }
 
-    boolean validatePassword(UserEntity user){
+    boolean validatePassword(UserEntity user) {
         if (user.getPassword() != null && user.getPassword().length() > 3) {
             String passwordRegex = "^(?=.*[A-Z])(?=.*[a-z].*[a-z])(?=.*\\d.*\\d).*$";
             return Pattern.matches(passwordRegex, user.getPassword());
@@ -108,7 +107,7 @@ public class AuthenticateUser implements IAuthenticateUserService {
         }
     }
 
-    String generateToken(){
+    String generateToken() {
         return UUID.randomUUID().toString();
     }
 }

@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories
 public class UserManagerApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(UserManagerApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(UserManagerApplication.class, args);
+    }
 
 }

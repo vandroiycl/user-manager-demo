@@ -43,7 +43,7 @@ class AuthenticateUserTest {
         Assertions.assertFalse(authenticateUser.validatePassword(user));
     }
 
-    private UserEntity createUser(){
+    private UserEntity createUser() {
         UserEntity user = new UserEntity();
         user.setName("Juan Rodriguez");
         user.setEmail("juan@rodriguez.org");
