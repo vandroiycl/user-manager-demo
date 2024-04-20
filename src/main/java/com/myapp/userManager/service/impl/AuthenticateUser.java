@@ -105,6 +105,7 @@ public class AuthenticateUser implements IAuthenticateUserService {
             //TODO: actualizar phones
             return userRepository.save(existingUser);
         } else {
+            user.setId(UUID.randomUUID().toString());
             user.setCreationDate(LocalDate.now());
             user.setModificationDate(LocalDate.now());
             user.setLastLoginDate(LocalDate.now());

@@ -11,12 +11,9 @@ import java.util.List;
 @Entity
 @Data
 @Getter
-@Table(name = "user_data")
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_data_seq")
-    @SequenceGenerator(name = "user_data_seq", allocationSize = 1)
-    private Long id; //TODO: cambiar a UUID
+    private String id;
 
     private String name;
 
