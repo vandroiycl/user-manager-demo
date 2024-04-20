@@ -1,0 +1,22 @@
+erDiagram
+USER {
+    id INT PK
+    name VARCHAR
+    email VARCHAR
+    password VARCHAR
+    creationDate DATE
+    modificationDate DATE
+    lastLoginDate DATE
+    token VARCHAR
+    isActive BOOL
+}
+
+PHONE {
+    id INT PK
+    userId INT FK
+    number VARCHAR
+    cityCode VARCHAR
+    countryCode VARCHAR
+}
+
+USER ||--o{ PHONE : has
