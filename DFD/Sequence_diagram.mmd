@@ -1,0 +1,27 @@
+sequenceDiagram
+    participant User as User
+    participant Controller as Controller
+    participant Service as Service
+    participant UserRepository as UserRepository
+    participant PhoneRepository as PhoneRepository
+
+    User ->> Controller: Realiza solicitud
+    activate Controller
+    Controller ->> Service: Llama al servicio
+    activate Service
+    Service ->> UserRepository: Busca usuario por correo electrónico
+    activate UserRepository
+    UserRepository -->> Service: Devuelve el usuario encontrado
+    deactivate UserRepository
+    Service ->> Service: Procesa la solicitud
+    Service ->> UserRepository: Verifica si el correo está registrado
+    activate UserRepository
+    UserRepository -->> Service: Devuelve si el correo está registrado
+    deactivate UserRepository
+    Service ->> UserRepository: Guarda los datos
+    activate UserRepository
+    UserRepository -->> Service: Devuelve el resultado
+    deactivate UserRepository
+    deactivate Service
+    Controller ->> User: Devuelve respuesta
+    deactivate Controller
