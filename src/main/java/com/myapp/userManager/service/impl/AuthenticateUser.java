@@ -13,9 +13,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Objects;
 import java.util.UUID;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 @Slf4j
@@ -59,7 +57,7 @@ public class AuthenticateUser implements IAuthenticateUserService {
         }
     }
 
-    private boolean validateEmailFormat(UserEntity user){
+    boolean validateEmailFormat(UserEntity user){
         if (user.getEmail() != null && user.getEmail().length() > 5){
             String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
             return Pattern.matches(emailRegex, user.getEmail());
@@ -68,15 +66,15 @@ public class AuthenticateUser implements IAuthenticateUserService {
         }
     }
 
-    private boolean validateEmail(UserEntity user){
+    boolean validateEmail(UserEntity user){
         return !isEmailRegistered(user.getEmail());
     }
 
-    private boolean isEmailRegistered(String userEmail){
+    boolean isEmailRegistered(String userEmail){
         return userRepository.findByEmail(userEmail) != null;
     }
 
-    private boolean validatePassword(UserEntity user){
+    boolean validatePassword(UserEntity user){
         if (user.getPassword() != null && user.getPassword().length() > 3) {
             String passwordRegex = "^(?=.*[A-Z])(?=.*[a-z].*[a-z])(?=.*\\d.*\\d).*$";
             return Pattern.matches(passwordRegex, user.getPassword());
@@ -85,7 +83,7 @@ public class AuthenticateUser implements IAuthenticateUserService {
         }
     }
 
-    private UserEntity createOrUpdateUser(UserEntity user) {
+    UserEntity createOrUpdateUser(UserEntity user) {
         UserEntity existingUser = userRepository.findByEmail(user.getEmail());
 
         String token = generateToken();
@@ -110,7 +108,7 @@ public class AuthenticateUser implements IAuthenticateUserService {
         }
     }
 
-    private String generateToken(){
+    String generateToken(){
         return UUID.randomUUID().toString();
     }
 }
